@@ -38,7 +38,7 @@ function normal:start()
 
         -- parse received data
         if #tb_tmp1 > 0 then
-          self:batchparse(tb_tmp1, tb_inst, nil)
+          self:batchparse(tb_tmp1, tb_inst, tb_outst)
         end
 
         -- send back sendback data

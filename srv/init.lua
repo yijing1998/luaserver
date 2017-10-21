@@ -58,8 +58,29 @@ function srv:batchreceive(tb_cli_ready, tb_inst)
   return ret
 end
 
+-- send data with no buffer (send immediately)
+-- undebug
 function srv:batchsend(tb_cli_ready, tb_outst)
-  local msg, err = nil, nil
+  local last, err, plast = nil, nil, nil
+  local tmpcli = nil
+  local msg = nil
+  for i = 1, #tb_cli_ready do
+    tmpcli = tb_cli_ready[i]
+    msg = tb_outst[tmpcli]:read()
+    if msg then
+      last, err, plast = tmpcli:send(msg)
+      if err == nil then
+        print(last, err, plast)
+      elseif err == "timeout" then
+        print(last, err, plast)
+      else
+        -- closed
+        print(last, err, plast)
+      end
+      -- save unsent msg
+
+    end
+  end
 end
 
 function srv:batchparse(tb_cli_ready, tb_inst, tb_outst)
