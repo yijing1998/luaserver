@@ -17,7 +17,6 @@ function simpleline:parse(inst)
   local last = 0
   local info = ""
   while i do
-    -- got
     info = string.sub(data, i, j)
     if rcp and #info > 0 then
       rcp:cook(info)

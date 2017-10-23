@@ -5,8 +5,7 @@ local o = require("parser")
 local raw = o:new()
 package.loaded[...] = raw
 
-function raw:doparse()
-  local inst = self.inst
+function raw:doparse(inst)
   local rcp = self.rcp
   
   if not inst then
