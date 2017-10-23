@@ -5,7 +5,7 @@ local o = require("parser")
 local relp = o:new()
 package.loaded[...] = relp
 
-function relp:doparse(inst, outst)
+function relp:parse(inst, outst)
   local rcp = self.rcp
   
   local data = inst:read()
@@ -13,6 +13,7 @@ function relp:doparse(inst, outst)
     return
   end
 
+  print("relp data:", data)
   -- header parse
   local i, j = string.find(data, "^%d+ %a+ %d+")
   local txnr, cmd, datalen = nil, nil, nil
@@ -30,10 +31,10 @@ function relp:doparse(inst, outst)
     print("cmd:" .. cmd)
     if cmd == "open" then
       print("open offer:" .. string.sub(data, j + 1, -1))
-      tmpstr = "\nrelp_version 1"
-      outst:write(txnr .. "rsp" .. #tmpstr .. "\n")
+      tmpstr = string.format(" \n%s 200 ok\nrelp_version 1", txnr)
+      outst:write(txnr .. " rsp " .. #tmpstr)
       outst:write(tmpstr)
-    else cmd == "syslog" then
+    elseif cmd == "syslog" then
       print("syslog")
     else
       print("others")

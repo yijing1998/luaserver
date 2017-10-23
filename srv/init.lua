@@ -1,6 +1,9 @@
 local srv = { host = nil, port = nil, tmout = nil, rbsize = nil, server = nil, parser = nil }
 package.loaded[...] = srv
 
+-- module use variables
+local stream = require("stream")
+
 function srv:new()
   local o = {}
   self.__index = self
