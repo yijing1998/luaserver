@@ -70,7 +70,8 @@ function srv:batchsend(tb_cli_ready, tb_outst)
   for i = 1, #tb_cli_ready do
     tmpcli = tb_cli_ready[i]
     msg = tb_outst[tmpcli]:read()
-    if msg then
+    if #msg > 0 then
+      print(msg)
       last, err, plast = tmpcli:send(msg)
       if err == nil then
         print(last, err, plast)

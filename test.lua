@@ -5,7 +5,7 @@ local normal = require("srv.normal")
 local s = normal:new()
 --local noreply = require("srv.noreply")
 --local s = noreply:new()
-s:init(host, port, tmout, rbsize, "parser.relp", "recipe.term")
+s:init(host, port, tmout, rbsize, "parser.relp", nil)
 s:start()
 
 
