@@ -7,5 +7,3 @@ local s = normal:new()
 --local s = noreply:new()
 s:init(host, port, tmout, rbsize, "parser.relp", nil)
 s:start()
-
-
