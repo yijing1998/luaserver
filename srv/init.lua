@@ -71,15 +71,14 @@ function srv:batchsend(tb_cli_ready, tb_outst)
     tmpcli = tb_cli_ready[i]
     msg = tb_outst[tmpcli]:read()
     if #msg > 0 then
-      print(msg)
       last, err, plast = tmpcli:send(msg)
       if err == nil then
-        print(last, err, plast)
+        print("no error")
       elseif err == "timeout" then
-        print(last, err, plast)
+        print("timeout")
       else
         -- closed
-        print(last, err, plast)
+        print("closed")
       end
       -- save unsent msg
 

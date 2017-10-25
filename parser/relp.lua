@@ -13,18 +13,14 @@ function relp:parse(inst, outst)
     return
   end
 
-  print(data)
   -- header parse
   local i, j = string.find(data, "^%d+ %a+ %d+%s*")
-  print(string.sub(data, j, j))
   local txnr, cmd, datalen = nil, nil, nil
   local tmpstr = nil
   while i do
     txnr, cmd, datalen = string.match(string.sub(data, i, j), "(%d+) (%a+) (%d+)%s*")
     datalen = tonumber(datalen)
     -- check if the whole cmd is received
-    print("datalen:", datalen)
-    print("#data:", #data)
     if j + datalen + 1 > #data then
       -- partial cmd, write back and wait for more
       print("partial cmd")
