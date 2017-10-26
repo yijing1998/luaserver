@@ -82,7 +82,7 @@ function relp:parse(inst, outst)
       tmpstr = string.format("200 ok")
       outst:write(txnr .. " rsp " .. #tmpstr .. " ")
       outst:write(tmpstr .. "\n")
-      print("response txnr:", txnr)
+      -- print("response txnr:", txnr)
       if self.rcp then
         self.rcp:cook(string.sub(data, j + 1, j + 1 + datalen))
       end
