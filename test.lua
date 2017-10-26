@@ -1,9 +1,22 @@
-local host, port = "*", 2514
-local tmout = { server = 3, client = 3, select = 3 }
-local rbsize = 200
-local normal = require("srv.normal")
-local s = normal:new()
---local noreply = require("srv.noreply")
---local s = noreply:new()
-s:init(host, port, tmout, rbsize, "parser.relp", "recipe.term")
+local scfg = {}
+local pcfg = {}
+local rcfg = {}
+
+scfg.name = "srv.normal"
+scfg.host = "*"
+scfg.port = 2514
+scfg.tmout = {}
+scfg.tmout.server = 3
+scfg.tmout.client = 3
+scfg.tmout.select = 3
+scfg.rbsize = 200
+
+pcfg.name = "parser.relp"
+pcfg.cfg = {}
+pcfg.cfg.maxinstwb = 10 -- max instream write back times (prevent bad msg)
+
+rcfg.name = "recipe.term"
+
+local f = require("srvfactory")
+local s = f.create(scfg, pcfg, rcfg)
 s:start()

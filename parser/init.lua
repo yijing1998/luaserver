@@ -4,7 +4,7 @@
 -- 2. extract info according to 1, and recipe them
 -- 3. form reply to outstream for further communication
 
-local parser = { rcp = nil }
+local parser = { rcp = nil, cfg = nil }
 package.loaded[...] = parser
 
 function parser:new()
@@ -14,8 +14,9 @@ function parser:new()
   return o
 end
 
-function parser:init(rcp)
+function parser:init(rcp, cfg)
   self.rcp = rcp
+  self.cfg = cfg
 end
 
 function parser:parse(inst, outst)

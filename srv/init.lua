@@ -1,9 +1,10 @@
-local srv = { host = nil, port = nil, tmout = nil, rbsize = nil, server = nil, parser = nil }
+local srv = { host = "", port = 0, tmout = {}, rbsize = 0, server = {}, parser = {} }
 package.loaded[...] = srv
 
--- module use variables
+-- load for reference
 local stream = require("stream")
 
+-- function: new routine, for inheritance
 function srv:new()
   local o = {}
   self.__index = self
@@ -15,7 +16,7 @@ end
 -- input
 -- tmout: table to store timeout values, tmout.server/client/select
 -- rbs: max receive block size
-function srv:init(host, port, tmout, rbsize, parser, recipe)
+function srv:init(host, port, tmout, rbsize, parser)
   self.host = host
   self.port = port
   self.tmout = tmout
@@ -25,10 +26,10 @@ function srv:init(host, port, tmout, rbsize, parser, recipe)
   if ret then
     ret:settimeout(tmout.server)
     self.server = ret
+  else
+    self.server = nil
   end
-  local recipe = recipe and require(recipe):new()
-  self.parser = require(parser):new()
-  self.parser:init(recipe)
+  self.parser = parser
 end
 
 function srv:saveclient(cli, tb_cli, tb_inst, tb_outst)
