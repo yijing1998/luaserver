@@ -74,7 +74,7 @@ function srv:batchsend(tb_cli_ready, tb_outst)
     if #msg > 0 then
       last, err, plast = tmpcli:send(msg)
       if err == nil then
-        print("no error")
+        -- print("no error")
       elseif err == "timeout" then
         print("timeout")
       else

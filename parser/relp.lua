@@ -30,7 +30,7 @@ local function secfilter(data, inst, maxinstwb)
 
   i, j = string.find(data, selfindstr.a)
   if i == nil then
-    print("bad message1:", instwb, data)
+    -- print("bad message1:", instwb, data)
     if instwb <= maxinstwb then
       inst:write(data)
       instwb = instwb + 1
@@ -39,8 +39,8 @@ local function secfilter(data, inst, maxinstwb)
   end
 
   if i ~= 1 then
-    print("bad message2:", instwb, string.sub(data, 1, i - 1))
-    print("bad message whole:", data)
+    -- print("bad message2:", instwb, string.sub(data, 1, i - 1))
+    -- print("bad message whole:", data)
     data = string.sub(data, i, -1)
   end
 
