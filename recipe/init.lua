@@ -12,6 +12,10 @@ function recipe:new()
   return o
 end
 
+function recipe:init(cfg)
+  self.cfg = cfg
+end
+
 function recipe:cook(info)
   -- a virtual function for understanding
   -- like interface/virtual function definition

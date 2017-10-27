@@ -26,3 +26,8 @@ function stream:read()
   end
   return ret
 end
+
+-- clear stream
+function stream:clear()
+  self.data = {}
+end

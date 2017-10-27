@@ -34,6 +34,8 @@ local function secfilter(data, inst, maxinstwb)
     if instwb <= maxinstwb then
       inst:write(data)
       instwb = instwb + 1
+    else
+      inst:clear()
     end
     return nil
   end
