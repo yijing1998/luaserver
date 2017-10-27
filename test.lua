@@ -27,8 +27,8 @@ local db = require("dbfactory").create(dbcfg)
 -- recipe (recipe.term)
 -- rcfg.name = "recipe.term"
 
--- recipe (recipe.rawlog_sqlite3)
-rcfg.name = "recipe.rawlog_sqlite3"
+-- recipe (recipe.rawlog_db)
+rcfg.name = "recipe.rawlog_db"
 rcfg.cfg = {}
 rcfg.cfg.db = db
 rcfg.cfg.maxtmcounts = 20

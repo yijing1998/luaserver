@@ -1,8 +1,8 @@
--- lua module: recipe.rawlog_sqlite3
--- store info in a sqlite3 file
+-- lua module: recipe.rawlog_db
+-- store info in a database
 local o = require("recipe")
-local rawlog_sqlite3 = o:new()
-package.loaded[...] = rawlog_sqlite3
+local rawlog_db = o:new()
+package.loaded[...] = rawlog_db
 
 -- config file settings
 -- cfg.db = db -> database object
@@ -14,7 +14,7 @@ local lasttmcheckpoint = os.time()
 -- function cook
 -- record time elapse and queue depth
 -- do batch SQL to reduce database open/close operations
-function rawlog_sqlite3:cook(info)
+function rawlog_db:cook(info)
   local maxtmcounts = self.cfg.maxtmcounts
   local maxqucounts = self.cfg.maxqucounts
   local db = self.cfg.db

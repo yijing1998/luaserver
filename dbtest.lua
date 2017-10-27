@@ -7,5 +7,9 @@ local f = require("dbfactory")
 local db = f.create(dbcfg)
 
 local sql = "insert into rawlog (rlog) values ('abc')"
-db:dummyexec(sql)
+local conn = db:start()
+if conn then
+  db:dummyexec(conn, sql)
+  db:stop(conn)
+end
 
