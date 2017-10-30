@@ -5,8 +5,11 @@ local o = require("recipe")
 local term = o:new()
 package.loaded[...] = term
 
--- function: recipe handling
--- show info in terminal
+-- config file settings
+-- need no config file
+
+-- function: cook
+-- recipe cook: show info in terminal
 function term:cook(info)
   print(info)
 end

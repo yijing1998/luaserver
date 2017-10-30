@@ -1,18 +1,20 @@
 -- lua module: recipe.rawlog_db
--- store info in a database
+-- store log msg in a database without modification
+-- log msg: a serial characters with or without '\n' ending
 local o = require("recipe")
 local rawlog_db = o:new()
 package.loaded[...] = rawlog_db
 
 -- config file settings
--- cfg.db = db -> database object
+-- cfg.db = ? -> database object
 -- cfg.maxtmcounts = 20 -> buffered info existance threshold: by time
 -- cfg.maxqucounts = 5 -> buffered info existance threshold: by queue depth
 
 local infocache = {}
 local lasttmcheckpoint = os.time()
--- function cook
--- record time elapse and queue depth
+-- function: cook
+-- recipe cook: store info in a database
+-- record time elapsed and info queue depth until threshold
 -- do batch SQL to reduce database open/close operations
 function rawlog_db:cook(info)
   local maxtmcounts = self.cfg.maxtmcounts
@@ -23,6 +25,7 @@ function rawlog_db:cook(info)
   infocache[#infocache + 1] = info
   
   -- do batch SQL
+  -- use conn:escape() to escape special characters
   if tmnow - lasttmcheckpoint >= maxtmcounts or #infocache >= maxqucounts then
     lasttmcheckpoint = tmnow
     local conn = db:start()

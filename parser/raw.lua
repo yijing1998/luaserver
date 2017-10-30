@@ -1,19 +1,23 @@
 -- lua module: parser.raw
--- raw parse, just read from instream without reply
+-- raw parse, read data from instream without reply
 
 local o = require("parser")
 local raw = o:new()
 package.loaded[...] = raw
 
+-- config file settings
+-- cfg.recipe = ? -> recipe object used when parsing
+
+-- function: parse
+-- read data from instream and passing them to the recipe
 function raw:parse(inst)
-  local rcp = self.rcp
-  
   if not inst then
     return
   end
 
+  local recipe = self.cfg.recipe
   info = inst:read()
-  if rcp and #info > 0 then
-    rcp:cook(info)
+  if recipe and #info > 0 then
+    recipe:cook(info)
   end
 end

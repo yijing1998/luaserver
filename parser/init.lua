@@ -7,6 +7,8 @@
 local parser = { rcp = nil, cfg = nil }
 package.loaded[...] = parser
 
+-- function: new
+-- new routine, for object initiating or inheritance
 function parser:new()
   local o = {}
   self.__index = self
@@ -14,11 +16,15 @@ function parser:new()
   return o
 end
 
-function parser:init(rcp, cfg)
-  self.rcp = rcp
+-- function: init
+-- init parser params
+function parser:init(cfg)
   self.cfg = cfg
 end
 
+-- function: parse (virtual function)
+-- do real work for stream parsing
+-- inheriting class must overwrite the function
 function parser:parse(inst, outst)
   -- a virtual function for understanding
   -- like interface/virtual function definition

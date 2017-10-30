@@ -5,8 +5,8 @@ local o = require("srv")
 local noreply = o:new()
 package.loaded[...] = noreply
 
--- function: msg handling
--- receive msg and do not reply
+-- function: start
+-- msg handling: receive msg and do not reply
 function noreply:start()
   local server = self.cfg.server
   local tmout = self.cfg.tmout
