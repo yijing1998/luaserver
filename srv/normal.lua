@@ -1,9 +1,16 @@
+-- lua module: srv.normal
+-- a tcp server for msg receiving, handling and sending
+
 local o = require("srv")
 local normal = o:new()
 package.loaded[...] = normal
 
+-- function: start
+-- msg handling: receive msg, parse msg and send back msg
 function normal:start()
-  if not self.server then
+  local server = self.cfg.server
+  local tmout = self.cfg.tmout
+  if not server then
     return
   end
 
@@ -15,7 +22,7 @@ function normal:start()
   -- run forever
   while 1 do
     -- waiting for a client
-    local cli, err = self.server:accept()
+    local cli, err = server:accept()
     if err then
       --print("accept:" .. err)
     end
@@ -30,7 +37,7 @@ function normal:start()
     -- and parse received data to form sendback data
     -- and send sendback data
     if #tb_cli > 0 then
-      tb_tmp1, tb_tmp2, err = socket.select(tb_cli, tb_cli, self.tmout.select)
+      tb_tmp1, tb_tmp2, err = socket.select(tb_cli, tb_cli, tmout.select)
       if err then
         --print("select:" .. err)
       else

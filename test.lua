@@ -5,13 +5,14 @@ local dbcfg = {}
 
 -- server
 scfg.name = "srv.normal"
-scfg.host = "*"
-scfg.port = 2514
-scfg.tmout = {}
-scfg.tmout.server = 3
-scfg.tmout.client = 3
-scfg.tmout.select = 3
-scfg.rbsize = 1000
+scfg.cfg = {}
+scfg.cfg.host = "*"
+scfg.cfg.port = 2514
+scfg.cfg.tmout = {}
+scfg.cfg.tmout.server = 3
+scfg.cfg.tmout.client = 3
+scfg.cfg.tmout.select = 3
+scfg.cfg.rbsize = 1000
 
 -- parser
 pcfg.name = "parser.relp"

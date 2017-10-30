@@ -1,9 +1,16 @@
+-- lua module: srv.noreply
+-- a tcp server receives msg and does not reply
+
 local o = require("srv")
 local noreply = o:new()
 package.loaded[...] = noreply
 
+-- function: msg handling
+-- receive msg and do not reply
 function noreply:start()
-  if not self.server then
+  local server = self.cfg.server
+  local tmout = self.cfg.tmout
+  if not server then
     return
   end
 
@@ -14,7 +21,7 @@ function noreply:start()
   -- run forever
   while 1 do
     -- waiting for a client
-    local cli, err = self.server:accept()
+    local cli, err = server:accept()
     if err then
       --print("accept:" .. err)
     end
@@ -28,7 +35,7 @@ function noreply:start()
     -- and find out closed clients
     -- and parse received data
     if #tb_cli > 0 then
-      tb_tmp1, tb_tmp2, err = socket.select(tb_cli, nil, self.tmout.select)
+      tb_tmp1, tb_tmp2, err = socket.select(tb_cli, nil, tmout.select)
       if err then
         --print("select:" .. err)
       else

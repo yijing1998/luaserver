@@ -5,6 +5,7 @@
 local recipe = {}
 package.loaded[...] = recipe
 
+-- function: new routine, for inheritance
 function recipe:new()
   local o = {}
   self.__index = self
@@ -12,10 +13,13 @@ function recipe:new()
   return o
 end
 
+-- function: init recipe params
 function recipe:init(cfg)
   self.cfg = cfg
 end
 
+-- function: do real work for msg recipe
+-- inherit class must overwrite the function
 function recipe:cook(info)
   -- a virtual function for understanding
   -- like interface/virtual function definition

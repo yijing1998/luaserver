@@ -9,7 +9,7 @@
             "type": "lua",
             "request": "launch",
             "stopOnEntry": true,
-            "program": "${workspaceRoot}/dbtest.lua",
+            "program": "${workspaceRoot}/t1.lua",
             "cwd": "${workspaceRoot}",
             "path": "${workspaceRoot}/?.lua;${workspaceRoot}/?/init.lua;e:/github-repo/lua-win/bin/win32/lua/?.lua;e:/github-repo/lua-win/bin/win32/lua/lua/?/init.lua",
             "cpath": "${workspaceRoot}/?.dll;e:/github-repo/lua-win/bin/win32/?.dll",

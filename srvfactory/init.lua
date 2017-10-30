@@ -10,6 +10,6 @@ function srvfactory.create(servercfg, parsercfg, recipecfg)
   local r = require(recipecfg.name):new()
   r:init(recipecfg.cfg)
   p:init(r, parsercfg.cfg)
-  s:init(servercfg.host, servercfg.port, servercfg.tmout, servercfg.rbsize, p)
+  s:init(servercfg.cfg, p)
   return s
 end

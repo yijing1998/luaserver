@@ -1,10 +1,14 @@
-local srv = { host = "", port = 0, tmout = {}, rbsize = 0, server = {}, parser = {} }
+-- lua module: srv
+-- prototype class for a tcp server
+
+local srv = {}
 package.loaded[...] = srv
 
 -- load for reference
 local stream = require("stream")
 
--- function: new routine, for inheritance
+-- function: new
+-- new routine, for object initiating or inheritance
 function srv:new()
   local o = {}
   self.__index = self
@@ -12,28 +16,37 @@ function srv:new()
   return o
 end
 
--- function: init server params
--- input
--- tmout: table to store timeout values, tmout.server/client/select
--- rbs: max receive block size
-function srv:init(host, port, tmout, rbsize, parser)
-  self.host = host
-  self.port = port
-  self.tmout = tmout
-  self.rbsize = rbsize
+-- config file settings
+-- cfg.host = "*" -> host name or ip address
+-- cfg.port = 514 -> socket listening port
+-- cfg.tmout = {} -> socket timemout settings: tmout.server, tmout.client, tmout.select, for luasocket api parmeters settings such as select, settimeout
+-- cfg.rbsize = 1000 -> socket receive block size
+
+-- function: init
+-- init server params
+function srv:init(cfg, parser)
+  self.cfg = cfg
+  local host = cfg.host
+  local port = cfg.port
+  local tmout = cfg.tmout
   local socket = require("socket")
   local ret, err = socket.bind(host, port)
   if ret then
     ret:settimeout(tmout.server)
-    self.server = ret
+    self.cfg.server = ret
   else
-    self.server = nil
+    self.cfg.server = nil
   end
-  self.parser = parser
+  self.cfg.parser = parser
 end
 
+-- function: saveclient
+-- save accepted client into tables
+-- tb_cli: array for accepted client socket
+-- tb_inst: table for (socket, instream) pair
+-- tb_outst: table for (socket, outstream) pair
 function srv:saveclient(cli, tb_cli, tb_inst, tb_outst)
-  cli:settimeout(self.tmout.client)
+  cli:settimeout(self.cfg.tmout.client)
   tb_cli[#tb_cli + 1] = cli
   if tb_inst then
     tb_inst[cli] = stream:new()
@@ -43,13 +56,19 @@ function srv:saveclient(cli, tb_cli, tb_inst, tb_outst)
   end
 end
 
+-- function: batchreceive
+-- batch receive msg from tb_cli_ready
+-- tb_cli_ready: array for ready sockets
+-- tb_inst: table for (socket, instream) pair
+-- received msg is written into the respective instream according to the socket
 function srv:batchreceive(tb_cli_ready, tb_inst)
+  local rbsize = self.cfg.rbsize
   local msg, err, pmsg = nil, nil, nil
   local tmpcli = nil
   local ret = {}
   for i = 1, #tb_cli_ready do
     tmpcli = tb_cli_ready[i]
-    msg, err, pmsg = tmpcli:receive(self.rbsize)
+    msg, err, pmsg = tmpcli:receive(rbsize)
     if err then
       tb_inst[tmpcli]:write(pmsg)
     else
@@ -62,8 +81,11 @@ function srv:batchreceive(tb_cli_ready, tb_inst)
   return ret
 end
 
--- send data with no buffer (send immediately)
--- undebug
+-- function: batchsend
+-- batch send msg from tb_cli_ready
+-- tb_cli_ready: array for ready sockets
+-- tb_outst: table for (socket, outstream) pair
+-- send msg immediately from the respective outstream according to the socket (no buffer)
 function srv:batchsend(tb_cli_ready, tb_outst)
   local last, err, plast = nil, nil, nil
   local tmpcli = nil
@@ -87,14 +109,25 @@ function srv:batchsend(tb_cli_ready, tb_outst)
   end
 end
 
+-- function: batchparse
+-- batch parse the received msg
+-- parse msg from instream and write the result to outsteam
+-- self.cfg.parser:parse() do the real work
 function srv:batchparse(tb_cli_ready, tb_inst, tb_outst)
   local tmpcli = nil
+  local parser = self.cfg.parser
   for i = 1, #tb_cli_ready do
     tmpcli = tb_cli_ready[i]
-    self.parser:parse(tb_inst and tb_inst[tmpcli], tb_outst and tb_outst[tmpcli])
+    parser:parse(tb_inst and tb_inst[tmpcli], tb_outst and tb_outst[tmpcli])
   end
 end
 
+-- function: rmclosedcli
+-- remove closed socket and associated streams
+-- tb_cli: array for sockets
+-- tb_cli_closed: array for closed sockets
+-- tb_inst: table for (socket, instream) pair
+-- tb_outst: table for (socket, outstream) pair
 function srv:rmclosedcli(tb_cli, tb_cli_closed, tb_inst, tb_outst)
   local tb_ret = {}
   local flag = 0
@@ -124,6 +157,11 @@ function srv:rmclosedcli(tb_cli, tb_cli_closed, tb_inst, tb_outst)
   return tb_ret
 end
 
+-- function: start (virtual function)
+-- do real work for msg handling
+-- inheriting class must overwrite the function
 function srv:start()
+  -- a virtual function for understanding
+  -- like interface/virtual function definition
   -- do nothing
 end
