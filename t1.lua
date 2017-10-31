@@ -1,27 +1,36 @@
-local scfg = {}
-local pcfg = {}
-local rcfg = {}
+local f = require("objfactory")
+
+-- db
 local dbcfg = {}
+dbcfg.connstr = "../database/syslog-sqlite3.db"
+local db = f.create("db.sqlite3", dbcfg)
+
+-- recipe.rawlog_db
+local rcfg = {}
+rcfg.db = db
+rcfg.maxtmcounts = 20
+rcfg.maxqucounts = 5
+local r = f.create("recipe.rawlog_db", rcfg)
+
+-- recipe.term
+-- local r = f.create("recipe.term", nil)
+
+-- parser.relp
+local pcfg = {}
+pcfg.recipe = r
+pcfg.maxinstwb = 10
+local p = f.create("parser.relp", pcfg)
 
 -- server
-scfg.name = "srv.normal"
-scfg.cfg = {}
-scfg.cfg.host = "*"
-scfg.cfg.port = 2514
-scfg.cfg.tmout = {}
-scfg.cfg.tmout.server = 1
-scfg.cfg.tmout.client = 1
-scfg.cfg.tmout.select = 1
-scfg.cfg.rbsize = 1000
+local scfg = {}
+scfg.host = "*"
+scfg.port = 2514
+scfg.tmout = {}
+scfg.tmout.server = 1
+scfg.tmout.client = 1
+scfg.tmout.select = 1
+scfg.rbsize = 1000
+scfg.parser = p
+local s = f.create("srv.normal", scfg)
 
--- parser
-pcfg.name = "parser.relp"
-pcfg.cfg = {}
-pcfg.cfg.maxinstwb = 10
-
--- recipe (recipe.term)
-rcfg.name = "recipe.term"
-
-local f = require("srvfactory")
-local s = f.create(scfg, pcfg, rcfg)
 s:start()

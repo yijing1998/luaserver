@@ -24,7 +24,7 @@ end
 
 -- function: init
 -- init server params
-function srv:init(cfg, parser)
+function srv:init(cfg)
   self.cfg = cfg
   local host = cfg.host
   local port = cfg.port
@@ -37,7 +37,6 @@ function srv:init(cfg, parser)
   else
     self.cfg.server = nil
   end
-  self.cfg.parser = parser
 end
 
 -- function: saveclient
@@ -95,6 +94,7 @@ function srv:batchsend(tb_cli_ready, tb_outst)
     msg = tb_outst[tmpcli]:read()
     if #msg > 0 then
       last, err, plast = tmpcli:send(msg)
+      print(last, err, plast)
       if err == nil then
         -- print("no error")
       elseif err == "timeout" then
