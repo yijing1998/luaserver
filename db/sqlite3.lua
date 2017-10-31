@@ -11,12 +11,12 @@ function sqlite3:setup()
 end
 
 -- function: start
--- get conn object
+-- get conn object and escape function
 function sqlite3:start()
   local env = self.cfg.env
   local connstr = self.cfg.connstr
   conn = env:connect(connstr)
-  return conn
+  return conn, conn.escape
 end
 
 -- function: stop

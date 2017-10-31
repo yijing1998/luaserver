@@ -10,6 +10,12 @@ package.loaded[...] = rawlog_db
 -- cfg.maxtmcounts = 20 -> buffered info existance threshold: by time
 -- cfg.maxqucounts = 5 -> buffered info existance threshold: by queue depth
 
+-- function myescape
+-- provide a custom escape function in case of no escape function returned by db:start()
+local function myescape(conn, sql)
+  return sql
+end
+
 local infocache = {}
 local lasttmcheckpoint = os.time()
 -- function: cook
@@ -28,13 +34,16 @@ function rawlog_db:cook(info)
   -- use conn:escape() to escape special characters
   if tmnow - lasttmcheckpoint >= maxtmcounts or #infocache >= maxqucounts then
     lasttmcheckpoint = tmnow
-    local conn = db:start()
+    local conn, escape = db:start()
+    if not escape then
+      escape = myescape
+    end
     local tmpstr = ""
     if conn then
       for i = 1, #infocache do
         -- remove trailing '\n'
         tmpstr = string.gsub(infocache[i], "\n$", "")
-        db:dummyexec(conn, string.format("insert into rawlog (rlog) values ('%s')", conn:escape(tmpstr)))
+        db:dummyexec(conn, string.format("insert into rawlog (rlog) values ('%s')", escape(conn, tmpstr)))
       end
       db:stop(conn)
     end
