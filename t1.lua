@@ -1,6 +1,6 @@
 local f = require("objfactory")
 
--- db
+--[[ db
 local dbcfg = {}
 dbcfg.connstr = "../database/syslog-sqlite3.db"
 local db = f.create("db.sqlite3", dbcfg)
@@ -10,10 +10,10 @@ local rcfg = {}
 rcfg.db = db
 rcfg.maxtmcounts = 20
 rcfg.maxqucounts = 5
-local r = f.create("recipe.rawlog_db", rcfg)
+local r = f.create("recipe.rawlog_db", rcfg)]]--
 
 -- recipe.term
--- local r = f.create("recipe.term", nil)
+local r = f.create("recipe.term", nil)
 
 -- parser.relp
 local pcfg = {}
