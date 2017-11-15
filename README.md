@@ -22,7 +22,7 @@
 `recipe.term`: 把信息打印至终端。  
 `recipe.rawlog_db.lua`: 把 *rsyslog* 信息保存至数据库。
 # How to use luaserver?
-创建 *.lua* 文件，根据需求选择所需的 `srv`、`parser`、`recipe`，设置好各模块参数后，调用 `s:start()` 启动服务。或直接使用实例文件：*t1.lua* 和 *t2.lua*。你也可以编写自己的 `srv`、`parser`、`recipe`。  
+创建 *.lua* 文件，根据需求选择所需的 `srv`、`parser`、`recipe`，设置好各模块参数后，调用 `s:start()` 启动服务。或直接使用示例文件：*t1.lua* 和 *t2.lua*。你也可以编写自己的 `srv`、`parser`、`recipe`。  
 *shell* 环境下，执行 `lua yoursvr.lua`
 # Next step
 问题1. `srv` 模块与 `parser` 模块之间只能传递 *tcp* 数据，`srv` 未提供机制接收 `parser` 的控制信息（如 *close* 等控制信息），`srv` 不能根据 `parser` 的反馈进行动态调整。  
