@@ -7,7 +7,7 @@
 例：已实现 relp 协议服务端，并安装在 *Xiaomi mini router* 上，能够接收并保存 *Aws* 虚拟主机日志。
 # prerequisite
 *lua 5.1* 以上  
-*luasocket*
+*luasocket*  
 *luasql-sqlite3*（如果使用 *module*: `recipe.rawlog_db`）
 # module introduction
 ## 服务器模块
